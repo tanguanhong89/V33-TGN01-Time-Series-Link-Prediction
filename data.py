@@ -70,4 +70,8 @@ class data_generator():
             with open(save_path, 'wb') as save_obj:
                 pickle.dump(obj=self, file=save_obj)
 
-        return seq_data[:seq_len], seq_time[:seq_len]#, seq_adj
+        return seq_data[:seq_len], seq_time[:seq_len], seq_adj[:seq_len]
+
+    @staticmethod
+    def add_orphan_data(self):
+        return

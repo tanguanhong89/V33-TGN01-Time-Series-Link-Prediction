@@ -34,7 +34,7 @@ class v33tgn01():
 
     def create_model(self):
         # batch size 1 for ease of usability
-        self.lstm_model, self.lstm_h_init = mlt.create_lstm(input_dim=self.embedding_dim,
+        self.lstm_model, self.lstm_h_init = mlt.create_lstm(input_size=self.embedding_dim,
                                                             output_size=self.embedding_dim, batch_size=1,
                                                             num_of_layers=self.lstm_layers, device=device)
         lstm_hidden_param_size = self.lstm_h_init[0].reshape(-1).shape[0]
