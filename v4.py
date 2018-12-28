@@ -23,9 +23,10 @@ v = lambda x: x.data.item()
 
 
 class v33tgn01():
-    def __init__(self, max_class_count, window_size, peek, lstm_layers=1, embedding_dim=4, time_scale=0.01):
-        self.max_class_count = max_class_count
-        self.one_hot = t.eye(max_class_count, device=device)
+    def __init__(self, max_label_count, window_size, peek, lstm_layers=1, embedding_dim=4, time_scale=0.01):
+        self.max_label_count = max_label_count
+        self.all_labels = t.arange(0, self.max_label_count, device=device)
+        self.one_hot = t.eye(max_label_count, device=device)
         self.embedding_dim = embedding_dim
         self.window_size = window_size
         self.peek = peek
@@ -43,10 +44,9 @@ class v33tgn01():
         self.lstm_model, self.lstm_h_init = mlt.create_lstm(input_size=self.embedding_dim + 1,  # + x for each param
                                                             output_size=self.embedding_dim, batch_size=1,
                                                             num_of_layers=self.lstm_layers, device=device)
-
+        # self.lstm_layers * embedding_dim * 2 + embedding_dim * 2
         self.e_lstm_out_to_h0, e1 = mlt.create_linear_layers(
-            layer_sizes=[self.lstm_layers * embedding_dim * 2, 2000, 800, embedding_dim * 2],
-            device=device)
+            layer_sizes=[self.lstm_layers * embedding_dim * 4, 300, embedding_dim * 2], device=device)
         self.e_h0_to_p, e2 = mlt.create_linear_layers(layer_sizes=[embedding_dim * 2, 1], device=device)
 
         # learning_weights = [self.w_node_emb] + e1 + e2 + e3 + e4 + e5 + e6 + list(self.lstm_model.parameters())
@@ -58,7 +58,7 @@ class v33tgn01():
         ]
         return
 
-    def train_model(self, data, batch_size=10, iter=100, lr=1e-3, save_path=None, bprop=True):
+    def train_model(self, data, batch_size=10, iter=100, lr=1e-3, save_path=None, bprop=True, neg_sample_cnt=10):
         _f = lambda x: t.tensor(x, device=device)
         data = [_f(x) for x in data]
         try:  # sorry, shouldnt be doing this way but its convenient
@@ -71,7 +71,7 @@ class v33tgn01():
         i = 0
         while True:
             batch_data = self.get_batch_data_by_rnd_label(data, batch_size)
-            l, batch_loss = self.get_batch_loss(batch_data=batch_data, neg_sample_cnt=3)
+            l, batch_loss = self.get_batch_loss(batch_data=batch_data, neg_sample_cnt=neg_sample_cnt)
 
             print('Batch loss:', l)
             if bprop:
@@ -90,7 +90,7 @@ class v33tgn01():
     def get_batch_data_by_rnd_label(self, data, batch_size):
 
         t.manual_seed(time.time())
-        rnd_label = 4  # t.randint(self.max_class_count, (1, 1)).squeeze().data.item()
+        rnd_label = 3  # t.randint(self.max_label_count, (1, 1)).squeeze().data.item()
         pos_batch = []
         while (len(pos_batch) == 0):
             pos_batch = self._batch._create_training_batch_pos_for_label(label=rnd_label, data=data,
@@ -101,7 +101,6 @@ class v33tgn01():
         return batch_output
 
     def get_batch_loss(self, batch_data, neg_sample_cnt=5):
-        classes = t.range(0, self.max_class_count, dtype=t.int64, device=device)
         batch_losses = [self._get_loss(d, neg_sample_cnt=neg_sample_cnt) for d in batch_data]
         return np.mean([x.data.item() for x in batch_losses]), batch_losses
 
@@ -141,9 +140,10 @@ class v33tgn01():
         parent_emb = t.index_select(label_emb, 0, parent_label).squeeze()
 
         _s = lambda x: x.reshape(self.lstm_layers * embedding_dim).squeeze()
-        lstm_out = t.cat([_s(p_hs[1]), _s(c_hs[1])], dim=0)
+        lstm_out = t.cat([_s(p_hs[0]), _s(p_hs[1]), _s(c_hs[0]), _s(c_hs[1])], dim=0)
+        # lstm_out = t.cat([_s(p_hs[1]), _s(c_hs[1]), current_emb, parent_emb], dim=0)
         # lstm_out = t.cat([current_emb, parent_emb], dim=0)
-        link = self._e_prop(self.e_lstm_out_to_h0, lstm_out, a=t.tanh)
+        link = self._e_prop(self.e_lstm_out_to_h0, lstm_out, a=None)
         link = self._e_prop(self.e_h0_to_p, link, a=t.sigmoid)
         return {'link probability': link, 'parent': {'pos': parent_pos, 'label': labels[parent_pos]},
                 'current': {'pos': len(labels), 'label': current_label}, 'data': current_data}
@@ -152,26 +152,52 @@ class v33tgn01():
         p_label = d['parent']['label']
         p_pos = d['parent']['pos']
         current_data = d['data']
+        current_label = d['data'][0][-1]
 
         link_p = d['link probability']
-        link_p_loss = link_p.sub(1).pow(2)
         bce_gtruth = t.ones(1, device=device)
 
         for n in range(neg_sample_cnt):
+            t.manual_seed(time.time())
             # select non parents
-            neg_parent_pos = t.randint(len(current_data[0]) - 1, (1, 1)).squeeze().data.item()
-            neg_class = current_data[0][neg_parent_pos]
-
-            while neg_class == p_label:
-                neg_parent_pos = t.randint(len(current_data[0]) - 1, (1, 1)).squeeze().data.item()
-                neg_class = current_data[0][neg_parent_pos]
-
-            neg_out = self._fprop_a(current_data=current_data, parent_pos=neg_parent_pos)
+            neg_out, neg_label = self._generate_neg_sample_by_nonparent(data=d['data'], label=d['current']['label'])
+            # print('pos par:', p_label, '   neg par:', neg_label, '    curr:', current_label)
             link_p = t.cat([link_p, neg_out['link probability']], dim=0)
             bce_gtruth = t.cat([bce_gtruth, t.zeros(1, device=device)])
         link_p = t.nn.Softmax()(link_p)
         bce_loss = t.nn.BCELoss()(link_p, bce_gtruth)
-        return bce_loss  # link_p.sub(1).pow(2)
+        return bce_loss  # bce_gtruth.sub(link_p).pow(2).mean()  # bce_loss  # link_p.sub(1).pow(2)
+
+    def _generate_neg_sample_by_nonparent(self, data, label):
+        t.manual_seed(time.time())
+        nonparents = self._get_nonparents(data, label)
+
+        rnd_nonparent_pos = []
+        while len(rnd_nonparent_pos) == 0:
+            rnd_nonparent = nonparents[t.randperm(len(nonparents))][0]  # shuffle
+
+            rnd_nonparent_pos = (data[0] == rnd_nonparent).nonzero()
+
+        rnd_nonparent_pos = rnd_nonparent_pos[t.randperm(len(rnd_nonparent_pos))][0]
+        neg_out = self._fprop_a(current_data=data, parent_pos=rnd_nonparent_pos)
+        return neg_out, rnd_nonparent
+
+    def _get_parents(self, data, label):
+        all_label_pos = (data[0] == label).nonzero().squeeze()
+        all_label_parent_pos = data[2].index_select(0, all_label_pos)
+        all_label_parents = data[0].index_select(0, all_label_parent_pos)
+        all_label_parents = all_label_parents.unique(sorted=True)
+        return all_label_parents
+
+    def _get_nonparents(self, data, label):
+        parents = self._get_parents(data, label)
+        all_labels = self.all_labels
+
+        nonparents = t.ones_like(all_labels, dtype=t.uint8, device=device)
+        for p in parents:
+            nonparents = (all_labels != p).mul(nonparents)
+        nonparents = all_labels.masked_select(nonparents)
+        return nonparents
 
     @staticmethod
     def _e_prop(e, input, a=None):
@@ -200,7 +226,7 @@ class v33tgn01():
             label_pos = label_pos[t.randperm(label_pos.shape[0])]
             if label_pos.shape[0] > batch_size:
                 label_pos = label_pos[:batch_size]
-            batch_data = [[data[0][:x], data[1][:x], data[2][:x]] for x in label_pos]
+            batch_data = [[data[0][:x + 1], data[1][:x + 1], data[2][:x + 1]] for x in label_pos]
             return batch_data
 
         @staticmethod
@@ -247,7 +273,7 @@ else:
 
 # seq_data_, seq_time_data_ = dg.generate_data(seq_len=seq_len, class_count=max_class_count)
 
-model = v33tgn01(time_scale=0.001, max_class_count=max_class_count,
+model = v33tgn01(time_scale=0.001, max_label_count=max_class_count,
                  window_size=min_length, peek=peek,
                  embedding_dim=embedding_dim, lstm_layers=3)
 if load_from_old:
@@ -255,4 +281,4 @@ if load_from_old:
         with open(save_path, 'rb') as file_object:  # load
             model = pickle.load(file_object)
 if not diagnostics_mode:
-    model.train_model(data, save_path=save_path, batch_size=300, lr=1e-6)
+    model.train_model(data, save_path=save_path, batch_size=10, lr=1e-2, neg_sample_cnt=1)

@@ -62,15 +62,15 @@ class data_generator():
 
         seq_data_time.sort(key=lambda x: x[1])
 
-        seq_data = [x[0] for x in seq_data_time]
-        seq_time = [x[1] for x in seq_data_time]
-        seq_adj = [x[2] for x in seq_data_time]
+        seq_data = np.asarray([x[0] for x in seq_data_time][:seq_len], dtype=np.int64)
+        seq_time = np.asarray([x[1] for x in seq_data_time][:seq_len], dtype=np.float32)
+        seq_adj = np.asarray([x[2] for x in seq_data_time][:seq_len], dtype=np.int64)
 
         if save_path:
             with open(save_path, 'wb') as save_obj:
                 pickle.dump(obj=self, file=save_obj)
 
-        return seq_data[:seq_len], seq_time[:seq_len], seq_adj[:seq_len]
+        return seq_data, seq_time, seq_adj
 
     @staticmethod
     def add_orphan_data(self):

@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d8dc276-6801-4946-b43d-823a61231db1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deleteMe.py" beforeDir="false" afterPath="$PROJECT_DIR$/deleteMe.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ml_helper" beforeDir="false" afterPath="$PROJECT_DIR$/ml_helper" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ml_helper/ml_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml_helper/ml_helper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/v1/v33-tgn01_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/v1/v33-tgn01_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/v2/v2.py" beforeDir="false" afterPath="$PROJECT_DIR$/v2/v2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/v3/v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/v3/v3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/v4.py" beforeDir="false" afterPath="$PROJECT_DIR$/v4.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,8 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/v4.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2679">
-              <caret line="141" lean-forward="true" selection-start-line="141" selection-end-line="141" />
+            <state relative-caret-position="87">
+              <caret line="167" column="53" lean-forward="true" selection-start-line="167" selection-start-column="19" selection-end-line="167" selection-end-column="53" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -34,8 +32,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="74" column="17" selection-start-line="74" selection-start-column="17" selection-end-line="74" selection-end-column="17" />
+            <state relative-caret-position="900">
+              <caret line="63" selection-start-line="63" selection-end-line="63" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -54,14 +52,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pick</find>
-      <find>choice</find>
-      <find>save</find>
-      <find>negative</find>
-      <find>_f</find>
-      <find>overload_mode</find>
-      <find>asty</find>
-      <find>for la</find>
       <find>w_output_time</find>
       <find>w_output</find>
       <find>raise</find>
@@ -78,12 +68,20 @@
       <find>lstm</find>
       <find>emb</find>
       <find>lstm_model</find>
-      <find>_fprop</find>
       <find>batch_logg</find>
       <find>batch_size</find>
       <find>shuffle</find>
       <find>t.tanh</find>
       <find>bceloss</find>
+      <find>_fprop</find>
+      <find>rand</find>
+      <find>neg</find>
+      <find>'current'</find>
+      <find>_get_loss</find>
+      <find>int32</find>
+      <find>bce</find>
+      <find>current train</find>
+      <find>bcel</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -106,10 +104,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="94" />
-    <option name="y" value="88" />
-    <option name="width" value="1345" />
-    <option name="height" value="722" />
+    <option name="x" value="64" />
+    <option name="y" value="35" />
+    <option name="width" value="1343" />
+    <option name="height" value="686" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -127,7 +125,7 @@
             <path>
               <item name="code" type="b2602c69:ProjectViewProjectNode" />
               <item name="code" type="462c0819:PsiDirectoryNode" />
-              <item name="v3" type="462c0819:PsiDirectoryNode" />
+              <item name="ml_helper" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -291,8 +289,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="59" y="-4" width="1381" height="814" extended-state="6" />
-    <editor active="true" />
+    <frame x="58" y="-11" width="1383" height="822" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4975" visible="true" weight="0.13843888" />
       <window_info id="Structure" order="1" sideWeight="0.5025" side_tool="true" weight="0.13843888" />
@@ -300,7 +297,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32896653" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32896653" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4992636" visible="true" weight="0.41775838" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4992636" visible="true" weight="0.4978166" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32896653" />
@@ -315,6 +312,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/v4.py</url>
+          <line>168</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -325,7 +329,7 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="current_data[0][neg_parent_pos]" language="Python" />
+        <watch expression="t.nn.BCELoss()(t.tensor([0.73,0.27]), bce_gtruth)" language="Python" />
       </configuration>
     </watches-manager>
   </component>
@@ -339,52 +343,52 @@
     </expressions>
     <expressions id="watch">
       <expression>
-        <expression-string>current_data[0][neg_parent_pos]</expression-string>
+        <expression-string>t.nn.BCELoss()(t.tensor([0.73,0.27]), bce_gtruth)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>current_data[2][neg_parent_pos]</expression-string>
+        <expression-string>t.nn.BCELoss()(t.tensor([0.75,0.25]), bce_gtruth)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>current_emb.shape</expression-string>
+        <expression-string>t.nn.BCELoss()(t.tensor([0.7,0.3]), bce_gtruth)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>_s(c_hs[0]).shape</expression-string>
+        <expression-string>t.nn.BCELoss()(t.tensor([0.6,0.4]), bce_gtruth)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>lstm_out.shape</expression-string>
+        <expression-string>t.nn.BCELoss()(link_p, bce_gtruth)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.nn.Softmax()(link_p)</expression-string>
+        <expression-string>[x['data'][0][-1] for x in batch_output]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.nn.Softmax(link_p)</expression-string>
+        <expression-string>[x['data'][-1] for x in batch_output]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.nn.Softmax</expression-string>
+        <expression-string>[x['data'] for x in batch_output]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.nn.softmax</expression-string>
+        <expression-string>batch_output</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>c_hs[1].reshape(self.lstm_layers*embedding_dim)</expression-string>
+        <expression-string>t.randint(self.max_label_count, (1, 1)).squeeze().dtype</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -494,13 +498,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/v33-tgn01_test.py" />
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/autograd/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="89" selection-start-line="89" selection-end-line="89" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/v2.py" />
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/nn/modules/linear.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -517,13 +514,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/delete_me.py" />
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="308" selection-start-line="308" selection-end-line="308" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/v2/v2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="131">
@@ -539,13 +529,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deleteMe.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-465">
-          <caret line="4" column="10" lean-forward="true" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/v3/v3.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="121">
@@ -556,16 +539,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/nn/functional.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="1353" selection-start-line="1353" selection-end-line="1353" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deleteMe.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ml_helper/ml_helper.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
+        <state relative-caret-position="165">
+          <caret line="93" selection-start-line="93" selection-end-line="93" />
           <folding>
-            <element signature="e#82#1081#0" />
-            <element signature="e#149#504#0" />
             <element signature="e#219#407#0" />
             <element signature="e#250#407#0" />
-            <element signature="e#593#1081#0" />
             <element signature="e#593#644#0" />
             <element signature="e#764#984#0" />
             <element signature="e#860#928#0" />
@@ -573,20 +587,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data.py">
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/autograd/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="74" column="17" selection-start-line="74" selection-start-column="17" selection-end-line="74" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="320">
+          <caret line="89" selection-start-line="89" selection-end-line="89" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/v4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2679">
-          <caret line="141" lean-forward="true" selection-start-line="141" selection-end-line="141" />
+        <state relative-caret-position="87">
+          <caret line="167" column="53" lean-forward="true" selection-start-line="167" selection-start-column="19" selection-end-line="167" selection-end-column="53" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>
