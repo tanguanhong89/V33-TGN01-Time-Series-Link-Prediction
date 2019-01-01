@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0d8dc276-6801-4946-b43d-823a61231db1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deleteMe.py" beforeDir="false" afterPath="$PROJECT_DIR$/deleteMe.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ml_helper" beforeDir="false" afterPath="$PROJECT_DIR$/ml_helper" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ml_helper/ml_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml_helper/ml_helper.py" afterDir="false" />
@@ -20,8 +19,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/v4.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="87">
-              <caret line="167" column="53" lean-forward="true" selection-start-line="167" selection-start-column="19" selection-end-line="167" selection-end-column="53" />
+            <state relative-caret-position="134">
+              <caret line="232" column="42" selection-start-line="232" selection-start-column="42" selection-end-line="232" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#17#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/deleteMe.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="205">
+              <caret line="30" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -52,12 +63,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>w_output_time</find>
-      <find>w_output</find>
-      <find>raise</find>
-      <find>w_node_time_aff</find>
-      <find>batch</find>
-      <find>seed</find>
       <find>w_node_aff</find>
       <find>t.tensor</find>
       <find>clone</find>
@@ -73,15 +78,21 @@
       <find>shuffle</find>
       <find>t.tanh</find>
       <find>bceloss</find>
-      <find>_fprop</find>
       <find>rand</find>
       <find>neg</find>
       <find>'current'</find>
       <find>_get_loss</find>
       <find>int32</find>
-      <find>bce</find>
       <find>current train</find>
       <find>bcel</find>
+      <find>current tra</find>
+      <find>pickle.dum</find>
+      <find>dim=0</find>
+      <find>b</find>
+      <find>t.save</find>
+      <find>soft</find>
+      <find>_fprop</find>
+      <find>bce</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -115,6 +126,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -131,7 +143,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -289,15 +300,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="58" y="-11" width="1383" height="822" extended-state="6" />
+    <frame x="61" y="25" width="1379" height="785" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4975" visible="true" weight="0.13843888" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4975" visible="true" weight="0.13716814" />
       <window_info id="Structure" order="1" sideWeight="0.5025" side_tool="true" weight="0.13843888" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32896653" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32896653" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4992636" visible="true" weight="0.4978166" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4992636" visible="true" weight="0.46493903" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32896653" />
@@ -315,8 +327,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/v4.py</url>
-          <line>168</line>
-          <option name="timeStamp" value="16" />
+          <line>197</line>
+          <option name="timeStamp" value="54" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -329,7 +341,7 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="t.nn.BCELoss()(t.tensor([0.73,0.27]), bce_gtruth)" language="Python" />
+        <watch expression="link_p" language="Python" />
       </configuration>
     </watches-manager>
   </component>
@@ -343,52 +355,52 @@
     </expressions>
     <expressions id="watch">
       <expression>
-        <expression-string>t.nn.BCELoss()(t.tensor([0.73,0.27]), bce_gtruth)</expression-string>
+        <expression-string>link_p</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.nn.BCELoss()(t.tensor([0.75,0.25]), bce_gtruth)</expression-string>
+        <expression-string>data[0][i]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.nn.BCELoss()(t.tensor([0.7,0.3]), bce_gtruth)</expression-string>
+        <expression-string>data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.nn.BCELoss()(t.tensor([0.6,0.4]), bce_gtruth)</expression-string>
+        <expression-string>t.randint(self.max_label_count,(1,1))[0][0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.nn.BCELoss()(link_p, bce_gtruth)</expression-string>
+        <expression-string>t.randint(self.max_label_count,(1,1))[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[x['data'][0][-1] for x in batch_output]</expression-string>
+        <expression-string>t.randint(self.max_label_count,(1,1))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[x['data'][-1] for x in batch_output]</expression-string>
+        <expression-string>t.randint(self.max_label_count,(1))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[x['data'] for x in batch_output]</expression-string>
+        <expression-string>t.randint(self.max_label_count,1)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>batch_output</expression-string>
+        <expression-string>data[0][0:label_parent_pos+1][-1]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.randint(self.max_label_count, (1, 1)).squeeze().dtype</expression-string>
+        <expression-string>label_parent</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -546,33 +558,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="308" selection-start-line="308" selection-end-line="308" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deleteMe.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="63" selection-start-line="63" selection-end-line="63" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ml_helper/ml_helper.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -594,10 +579,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deleteMe.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="30" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/v4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="167" column="53" lean-forward="true" selection-start-line="167" selection-start-column="19" selection-end-line="167" selection-end-column="53" />
+        <state relative-caret-position="134">
+          <caret line="232" column="42" selection-start-line="232" selection-start-column="42" selection-end-line="232" selection-end-column="42" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>

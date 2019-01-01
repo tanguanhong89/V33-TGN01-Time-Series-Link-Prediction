@@ -23,17 +23,17 @@ def closs(y, y_):
     return y.sub(y_).pow(2).mean()
 
 
-for i in range(10):
+for i in range(100):
     y_ = t.nn.Softmax()(L2(L1(x)).sigmoid())
     t1 = time.time()
-    bceloss = t.nn.BCELoss()(y_, y)
+    #bceloss = t.nn.BCELoss()(y_, y)
     t2 = time.time()
-    bceloss.backward(retain_graph=True)
+    #bceloss.backward(retain_graph=True)
     t3 = time.time()
 
-    #cus_loss = closs(y_, y)
+    cus_loss = closs(y_, y)
     t4 = time.time()
-    #cus_loss.backward(retain_graph=True)
+    cus_loss.backward(retain_graph=True)
     t5 = time.time()
 
     # print('BCE:', str(t2 - t1), '    BCE bw:', str(t3 - t2), '   cL:', str(t4 - t3), '   cL bw:', str(t5 - t4))

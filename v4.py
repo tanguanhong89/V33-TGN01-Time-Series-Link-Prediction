@@ -9,7 +9,7 @@ data_folder = '/'.join(os.getcwd().split('/')[:-1] + ['data'])
 
 tf = t.float
 ti = t.int
-device = t.device("cuda")
+device = t.device("cpu")
 
 embedding_dim = 13
 seq_len = 700
@@ -46,7 +46,7 @@ class v33tgn01():
                                                             num_of_layers=self.lstm_layers, device=device)
         # self.lstm_layers * embedding_dim * 2 + embedding_dim * 2
         self.e_lstm_out_to_h0, e1 = mlt.create_linear_layers(
-            layer_sizes=[self.lstm_layers * embedding_dim * 4, 300, embedding_dim * 2], device=device)
+            layer_sizes=[self.lstm_layers * embedding_dim * 4, 30, embedding_dim * 2], device=device)
         self.e_h0_to_p, e2 = mlt.create_linear_layers(layer_sizes=[embedding_dim * 2, 1], device=device)
 
         # learning_weights = [self.w_node_emb] + e1 + e2 + e3 + e4 + e5 + e6 + list(self.lstm_model.parameters())
@@ -82,7 +82,8 @@ class v33tgn01():
             if save_path:
                 if i % 10 == 0 and i != 0:
                     with open(save_path, 'wb') as file_object:  # save
-                        pickle.dump(obj=self, file=file_object)
+                        t.save(obj=self, f=file_object)
+                        # pickle.dump(obj=self, file=file_object)
                         print('saved')
                     i = 0
         return
@@ -95,6 +96,7 @@ class v33tgn01():
         while (len(pos_batch) == 0):
             pos_batch = self._batch._create_training_batch_pos_for_label(label=rnd_label, data=data,
                                                                          batch_size=batch_size)
+            print('Retrying batch...')
         print('Current training label:', rnd_label)
         batch_output = [self._fprop(x) for x in pos_batch]
 
@@ -112,18 +114,12 @@ class v33tgn01():
             o = act(ee(o))
         return o
 
-    def _fprop(self, data):
-        labels, timings, par_pos = data
-
+    def _fprop(self, current_data):
         # check for orphans
-        parent_pos = par_pos[-1]
-        out = self._fprop_a(current_data=data, parent_pos=parent_pos)
-        return out
-
-    def _fprop_a(self, current_data, parent_pos):
         labels, timings, par_pos = current_data
         current_time = timings[-1]
         current_label = labels[-1]
+        parent_pos = current_data[2][-1]
 
         # check for orphans
         parent_label = labels[parent_pos]
@@ -136,8 +132,38 @@ class v33tgn01():
         c_hs = self.lstm_model(emb_time, self.lstm_h_init)[1]
         p_hs = self.lstm_model(emb_time[:parent_pos + 1], self.lstm_h_init)[1]
 
-        current_emb = t.index_select(label_emb, 0, current_label).squeeze()
-        parent_emb = t.index_select(label_emb, 0, parent_label).squeeze()
+        # current_emb = t.index_select(label_emb, 0, current_label).squeeze()
+        # parent_emb = t.index_select(label_emb, 0, parent_label).squeeze()
+
+        _s = lambda x: x.reshape(self.lstm_layers * embedding_dim).squeeze()
+        lstm_out = t.cat([_s(p_hs[0]), _s(p_hs[1]), _s(c_hs[0]), _s(c_hs[1])], dim=0)
+        # lstm_out = t.cat([_s(p_hs[1]), _s(c_hs[1]), current_emb, parent_emb], dim=0)
+        # lstm_out = t.cat([current_emb, parent_emb], dim=0)
+        link = self._e_prop(self.e_lstm_out_to_h0, lstm_out, a=None)
+        link = self._e_prop(self.e_h0_to_p, link, a=t.sigmoid)
+        return {'link probability': link, 'parent': {'pos': parent_pos, 'label': labels[parent_pos]},
+                'current': {'pos': len(labels), 'label': current_label}, 'data': current_data}
+
+    def _fprop_a(self, current_data):
+        # designed as such for non parents
+        labels, timings, par_pos = current_data
+        current_time = timings[-1]
+        current_label = labels[-1]
+        parent_pos = current_data[2][-1]
+
+        # check for orphans
+        parent_label = labels[parent_pos]
+
+        norm_timings = t.tanh(timings.sub(current_time).mul(self.time_scale))
+
+        label_emb = t.index_select(self.w_node_emb, dim=0, index=labels)
+        emb_time = t.cat([label_emb, norm_timings.unsqueeze(1)], dim=1).unsqueeze(1)
+
+        c_hs = self.lstm_model(emb_time, self.lstm_h_init)[1]
+        p_hs = self.lstm_model(emb_time[:parent_pos + 1], self.lstm_h_init)[1]
+
+        # current_emb = t.index_select(label_emb, 0, current_label).squeeze()
+        # parent_emb = t.index_select(label_emb, 0, parent_label).squeeze()
 
         _s = lambda x: x.reshape(self.lstm_layers * embedding_dim).squeeze()
         lstm_out = t.cat([_s(p_hs[0]), _s(p_hs[1]), _s(c_hs[0]), _s(c_hs[1])], dim=0)
@@ -160,27 +186,70 @@ class v33tgn01():
         for n in range(neg_sample_cnt):
             t.manual_seed(time.time())
             # select non parents
-            neg_out, neg_label = self._generate_neg_sample_by_nonparent(data=d['data'], label=d['current']['label'])
-            # print('pos par:', p_label, '   neg par:', neg_label, '    curr:', current_label)
+            # neg_out, neg_label = self._generate_neg_sample_by_nonparent(data=d['data'])
+            neg_out = self._generate_neg_sample_by_wrong_seq(data=d['data'])
+
             link_p = t.cat([link_p, neg_out['link probability']], dim=0)
             bce_gtruth = t.cat([bce_gtruth, t.zeros(1, device=device)])
-        link_p = t.nn.Softmax()(link_p)
+
+        link_p = link_p.div(link_p.sum())
+        # link_p = t.nn.Softmax(dim=0)(link_p)
         bce_loss = t.nn.BCELoss()(link_p, bce_gtruth)
         return bce_loss  # bce_gtruth.sub(link_p).pow(2).mean()  # bce_loss  # link_p.sub(1).pow(2)
 
-    def _generate_neg_sample_by_nonparent(self, data, label):
+    def _generate_neg_sample_by_nonparent(self, data):
         t.manual_seed(time.time())
+        data[0] = data[0].clone()
+        label = data[0][-1]
+        label_parent_pos = data[2][-1]
         nonparents = self._get_nonparents(data, label)
+        rnd_nonparent = nonparents[t.randperm(len(nonparents))][0]  # shuffle
 
-        rnd_nonparent_pos = []
-        while len(rnd_nonparent_pos) == 0:
-            rnd_nonparent = nonparents[t.randperm(len(nonparents))][0]  # shuffle
-
-            rnd_nonparent_pos = (data[0] == rnd_nonparent).nonzero()
-
-        rnd_nonparent_pos = rnd_nonparent_pos[t.randperm(len(rnd_nonparent_pos))][0]
-        neg_out = self._fprop_a(current_data=data, parent_pos=rnd_nonparent_pos)
+        data[0][label_parent_pos] = rnd_nonparent
+        neg_out = self._fprop(current_data=data)
         return neg_out, rnd_nonparent
+
+    def _generate_neg_sample_by_wrong_seq(self, data, scramble=['parent', 'current'], noise_percent=0.5):
+        t.manual_seed(time.time())
+        data[0] = data[0].clone()
+        label = data[0][-1]
+        label_parent_pos = data[2][-1]
+        label_parent = data[0][label_parent_pos]
+
+        # scramble parent history
+        if scramble.__contains__('parent'):
+            for i in range(label_parent_pos):
+                if np.random.rand() < noise_percent:
+                    data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]
+
+        # scramble current history
+        if scramble.__contains__('current'):
+            for i in range(label_parent_pos, len(data[0])):
+                if np.random.rand() < noise_percent:
+                    data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]
+        neg_out = self._fprop(current_data=data)
+        return neg_out
+
+    def _generate_neg_sample_by_wrong_time(self, data, scramble=['parent', 'current'], noise_percent=0.5):
+        t.manual_seed(time.time())
+        data[0] = data[0].clone()
+        label = data[0][-1]
+        label_parent_pos = data[2][-1]
+        label_parent = data[0][label_parent_pos]
+
+        # scramble parent history
+        if scramble.__contains__('parent'):
+            for i in range(label_parent_pos):
+                if np.random.rand() < noise_percent:
+                    data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]
+
+        # scramble current history
+        if scramble.__contains__('current'):
+            for i in range(label_parent_pos, len(data[0])):
+                if np.random.rand() < noise_percent:
+                    data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]
+        neg_out = self._fprop(current_data=data)
+        return neg_out
 
     def _get_parents(self, data, label):
         all_label_pos = (data[0] == label).nonzero().squeeze()
@@ -250,7 +319,7 @@ save_path = data_folder + '/modelV4'
 
 diagnostics_mode = False
 
-save_mode = True
+save_mode = False
 load_from_old = True
 
 if diagnostics_mode:
@@ -279,6 +348,6 @@ model = v33tgn01(time_scale=0.001, max_label_count=max_class_count,
 if load_from_old:
     if os.path.exists(save_path):
         with open(save_path, 'rb') as file_object:  # load
-            model = pickle.load(file_object)
+            model = t.load(file_object, map_location=device)
 if not diagnostics_mode:
     model.train_model(data, save_path=save_path, batch_size=10, lr=1e-2, neg_sample_cnt=1)
