@@ -233,23 +233,9 @@ class v33tgn01():
     def _generate_neg_sample_by_wrong_time(self, data, scramble=['parent', 'current'], noise_percent=0.5):
         t.manual_seed(time.time())
         data[0] = data[0].clone()
-        label = data[0][-1]
-        label_parent_pos = data[2][-1]
-        label_parent = data[0][label_parent_pos]
+        data[1] = data[1].clone()
 
-        # scramble parent history
-        if scramble.__contains__('parent'):
-            for i in range(label_parent_pos):
-                if np.random.rand() < noise_percent:
-                    data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]
-
-        # scramble current history
-        if scramble.__contains__('current'):
-            for i in range(label_parent_pos, len(data[0])):
-                if np.random.rand() < noise_percent:
-                    data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]
-        neg_out = self._fprop(current_data=data)
-        return neg_out
+        return 
 
     def _get_parents(self, data, label):
         all_label_pos = (data[0] == label).nonzero().squeeze()
