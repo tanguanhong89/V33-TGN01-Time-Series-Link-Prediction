@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d8dc276-6801-4946-b43d-823a61231db1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ml_helper" beforeDir="false" afterPath="$PROJECT_DIR$/ml_helper" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ml_helper/ml_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml_helper/ml_helper.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/v4.py" beforeDir="false" afterPath="$PROJECT_DIR$/v4.py" afterDir="false" />
@@ -17,10 +18,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/v4.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="237" column="15" selection-start-line="237" selection-start-column="15" selection-end-line="237" selection-end-column="15" />
+            <state relative-caret-position="130">
+              <caret line="195" column="31" lean-forward="true" selection-start-line="195" selection-start-column="31" selection-end-line="195" selection-end-column="31" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
+                <element signature="e#8235#8633#0" />
+                <element signature="e#9160#9944#0" />
+                <element signature="e#9762#11828#0" />
+                <element signature="e#11879#12176#0" />
+                <element signature="e#12230#12552#0" />
               </folding>
             </state>
           </provider>
@@ -29,7 +35,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deleteMe.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
+            <state relative-caret-position="420">
               <caret line="30" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
@@ -113,10 +119,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="64" />
-    <option name="y" value="35" />
-    <option name="width" value="1343" />
-    <option name="height" value="686" />
+    <option name="x" value="106" />
+    <option name="y" value="316" />
+    <option name="width" value="1233" />
+    <option name="height" value="634" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -305,16 +311,16 @@
       <window_info id="Structure" order="1" sideWeight="0.5025" side_tool="true" weight="0.13843888" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32896653" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3262195" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32896653" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4992636" visible="true" weight="0.46493903" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4992636" visible="true" weight="0.5594512" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32896653" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32896653" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32896653" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50073636" side_tool="true" weight="0.3857351" />
-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32896653" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.3277439" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -322,13 +328,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/v4.py</url>
-          <line>197</line>
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -339,7 +338,7 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="link_p" language="Python" />
+        <watch expression="neg_out_nonp['link probability']" language="Python" />
       </configuration>
     </watches-manager>
   </component>
@@ -353,52 +352,52 @@
     </expressions>
     <expressions id="watch">
       <expression>
-        <expression-string>link_p</expression-string>
+        <expression-string>neg_out_nonp['link probability']</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>data[0][i]</expression-string>
+        <expression-string>self._fprop(d['data'])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]</expression-string>
+        <expression-string>current_data[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.randint(self.max_label_count,(1,1))[0][0]</expression-string>
+        <expression-string>self._fprop(current_data)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.randint(self.max_label_count,(1,1))[0]</expression-string>
+        <expression-string>self._fprop(data)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.randint(self.max_label_count,(1,1))</expression-string>
+        <expression-string>self._fprop()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.randint(self.max_label_count,(1))</expression-string>
+        <expression-string>noise_percent</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>t.randint(self.max_label_count,1)</expression-string>
+        <expression-string>old_time[chosen_position-1:chosen_position+2]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>data[0][0:label_parent_pos+1][-1]</expression-string>
+        <expression-string>old_time[chosen_position]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>label_parent</expression-string>
+        <expression-string>data[1][chosen_position]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -500,13 +499,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/-905023037/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="3625" column="8" selection-start-line="3625" selection-start-column="8" selection-end-line="3625" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/v33-tgn01_test.py" />
     <entry file="file://$PROJECT_DIR$/v2.py" />
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/nn/modules/linear.py">
@@ -516,39 +508,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/nn/modules/rnn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="130" selection-start-line="130" selection-end-line="130" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/delete_me.py" />
-    <entry file="file://$PROJECT_DIR$/v2/v2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="441" column="39" selection-start-line="441" selection-start-column="39" selection-end-line="441" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/v2/v2.py" />
     <entry file="file://$PROJECT_DIR$/v3.py" />
-    <entry file="file://$PROJECT_DIR$/v1/v33-tgn01_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="195" column="8" selection-start-line="195" selection-start-column="8" selection-end-line="195" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/v3/v3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="177" column="62" lean-forward="true" selection-start-line="173" selection-start-column="11" selection-end-line="177" selection-end-column="62" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/v1/v33-tgn01_test.py" />
+    <entry file="file://$PROJECT_DIR$/v3/v3.py" />
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/nn/functional.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="137">
@@ -584,6 +548,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/deleteMe.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="30" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/data.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="900">
@@ -594,22 +568,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deleteMe.py">
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/torch/nn/modules/rnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="30" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="216">
+          <caret line="182" selection-start-line="182" selection-end-line="182" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/-905023037/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="721" column="6" selection-start-line="721" selection-start-column="6" selection-end-line="721" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/v4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="237" column="15" selection-start-line="237" selection-start-column="15" selection-end-line="237" selection-end-column="15" />
+        <state relative-caret-position="130">
+          <caret line="195" column="31" lean-forward="true" selection-start-line="195" selection-start-column="31" selection-end-line="195" selection-end-column="31" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
+            <element signature="e#8235#8633#0" />
+            <element signature="e#9160#9944#0" />
+            <element signature="e#9762#11828#0" />
+            <element signature="e#11879#12176#0" />
+            <element signature="e#12230#12552#0" />
           </folding>
         </state>
       </provider>
