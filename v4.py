@@ -191,7 +191,7 @@ class v33tgn01():
             neg_out_pt_shift, _ = self.NegativeSampleGenerator.point_shift(self, data=d['data'], noise_percent=0.5)
             link_p = t.cat([link_p, neg_out_nonp['link probability'], neg_out_pt_mut['link probability'],
                             neg_out_pt_shift['link probability']], dim=0)
-            print(link_p)
+            # print(link_p)
 
             bce_gtruth = t.cat(
                 [bce_gtruth, t.zeros(1, device=device), t.zeros(1, device=device), t.zeros(1, device=device)])
