@@ -91,7 +91,7 @@ class v33tgn01():
     def get_batch_data_by_rnd_label(self, data, batch_size):
 
         t.manual_seed(time.time())
-        rnd_label = 3  # t.randint(self.max_label_count, (1, 1)).squeeze().data.item()
+        rnd_label = t.randint(self.max_label_count, (1, 1)).squeeze().data.item()
         pos_batch = []
         while (len(pos_batch) == 0):
             pos_batch = self._batch._create_training_batch_pos_for_label(label=rnd_label, data=data,
@@ -189,15 +189,13 @@ class v33tgn01():
             neg_out_nonp, neg_label = self.NegativeSampleGenerator.nonparent(self, data=d['data'])
             neg_out_pt_mut, _ = self.NegativeSampleGenerator.point_mutate(self, data=d['data'], noise_percent=0.5)
             neg_out_pt_shift, _ = self.NegativeSampleGenerator.point_shift(self, data=d['data'], noise_percent=0.5)
-            link_p = t.cat([link_p, neg_out_nonp['link probability'], neg_out_pt_mut['link probability'],
-                            neg_out_pt_shift['link probability']], dim=0)
-            # print(link_p)
-
+            link_p = t.cat([link_p, neg_out_nonp['link probability']])#, neg_out_pt_mut['link probability'],
+             #               neg_out_pt_shift['link probability']], dim=0)
             bce_gtruth = t.cat(
-                [bce_gtruth, t.zeros(1, device=device), t.zeros(1, device=device), t.zeros(1, device=device)])
-        print(link_p)
+                [bce_gtruth, t.zeros(1, device=device), ])#t.zeros(1, device=device), t.zeros(1, device=device)])
+
         link_p = link_p.div(link_p.sum())
-        # link_p = t.nn.Softmax(dim=0)(link_p)
+        print(link_p)
         bce_loss = t.nn.BCELoss()(link_p, bce_gtruth)
         return bce_loss  # bce_gtruth.sub(link_p).pow(2).mean()  # bce_loss  # link_p.sub(1).pow(2)
 
@@ -299,89 +297,6 @@ class v33tgn01():
         def unknown_event():
             return
 
-    def _generate_neg_sample_by_nonparent(self, data):
-        t.manual_seed(time.time())
-        data[0] = data[0].clone()
-        label = data[0][-1]
-        label_parent_pos = data[2][-1]
-        nonparents = self._get_nonparents(data, label)
-        rnd_nonparent = nonparents[t.randperm(len(nonparents))][0]  # shuffle
-
-        data[0][label_parent_pos] = rnd_nonparent
-        neg_out = self._fprop(current_data=data)
-        return neg_out, rnd_nonparent
-
-    def _generate_neg_sample_by_point_mutation(self, data, scramble=['parent', 'current'], noise_percent=0.5):
-        t.manual_seed(time.time())
-        data[0] = data[0].clone()
-        label = data[0][-1]
-        label_parent_pos = data[2][-1]
-        label_parent = data[0][label_parent_pos]
-
-        # scramble parent history
-        if scramble.__contains__('parent'):
-            for i in range(label_parent_pos):
-                if np.random.rand() < noise_percent:
-                    data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]
-
-        # scramble current history
-        if scramble.__contains__('current'):
-            for i in range(label_parent_pos, len(data[0])):
-                if np.random.rand() < noise_percent:
-                    data[0][i] = t.randint(self.max_label_count, (1, 1))[0][0]
-        neg_out = self._fprop(current_data=data)
-        return neg_out, data
-
-    def _generate_neg_sample_by_point_shift(self, data, scramble=['parent', 'current'], noise_percent=0.5,
-                                            random_insert_bracket_range=[10, 20]):
-
-        old_seq, old_time, old_parent = data[0], data[1], data[2]
-        data[0], data[1], data[2] = data[0].clone(), data[1].clone(), data[2].clone()
-        label, label_parent_pos = data[0][-1], data[2][-1]
-        label_parent = data[0][label_parent_pos]
-
-        def _h(ii):
-            t.manual_seed(time.time())
-            if np.random.rand() < noise_percent:
-                future = t.arange(min(i + random_insert_bracket_range[0], len(data[0]) - 1),
-                                  min(i + random_insert_bracket_range[1], len(data[0]) - 1))
-
-                past = t.arange(max(i - random_insert_bracket_range[1], 0), max(i - random_insert_bracket_range[0], 0))
-
-                possible_positions = t.cat([future, past])
-                chosen_position = possible_positions[t.randperm(len(possible_positions))][0]
-
-                data[0][chosen_position] = old_seq[ii]
-                data[1][chosen_position] = (old_time[chosen_position - 1].add(old_time[chosen_position + 1])).div(2)
-                data[2][chosen_position] = old_parent[ii]
-
-                if chosen_position < ii:
-                    for j in range(chosen_position + 1, ii):
-                        # shift the rest to future
-                        data[0][j] = old_seq[j - 1]
-                        data[1][j] = old_time[j - 1]
-                        data[2][j] = old_parent[j - 1]
-
-                else:  # move to future
-                    for j in range(ii, chosen_position):
-                        # shift the rest to past
-                        data[0][j] = old_seq[j + 1]
-                        data[1][j] = old_time[j + 1]
-                        data[2][j] = old_parent[j + 1]
-            return
-
-        # scramble parent history
-        if scramble.__contains__('parent'):
-            for i in range(label_parent_pos):
-                _h(i)
-
-        # scramble current history
-        if scramble.__contains__('current'):
-            for i in range(label_parent_pos, len(data[0])):
-                _h(i)
-        neg_out = self._fprop(current_data=data)
-        return neg_out, data
-
     def _get_parents(self, data, label):
         all_label_pos = (data[0] == label).nonzero().squeeze()
         all_label_parent_pos = data[2].index_select(0, all_label_pos)
@@ -481,4 +396,4 @@ if load_from_old:
         with open(save_path, 'rb') as file_object:  # load
             model = t.load(file_object, map_location=device)
 if not diagnostics_mode:
-    model.train_model(data, save_path=save_path, batch_size=10, lr=1e-2, neg_sample_cnt=1)
+    model.train_model(data, save_path=save_path, batch_size=1, lr=1e-2, neg_sample_cnt=1)
