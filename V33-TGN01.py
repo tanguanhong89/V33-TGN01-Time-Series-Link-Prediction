@@ -17,28 +17,28 @@ seq_len = 700
 # create classes
 max_class_count = 8
 min_length = 50
-peek = 3
 
 v = lambda x: x.data.item()
 
 
 class v33tgn01():
-    def __init__(self, max_label_count, window_size, peek, lstm_layers=1, embedding_dim=4, time_scale=0.01):
+    def __init__(self, max_label_count, window_size, lstm_layers=1, embedding_dim=4, time_scale=0.01,
+                 min_length=0):
         self.max_label_count = max_label_count
         self.all_labels = t.arange(0, self.max_label_count, device=device)
         self.one_hot = t.eye(max_label_count, device=device)
         self.embedding_dim = embedding_dim
         self.window_size = window_size
-        self.peek = peek
         self.time_scale = time_scale
         self.lstm_layers = lstm_layers
+        self.min_length = min_length
 
         return
 
     def create_model(self):
 
         # weights
-        self.w_node_emb = t.randn((max_class_count, embedding_dim), dtype=tf, device=device, requires_grad=True)
+        self.w_node_emb = t.randn((self.max_label_count, embedding_dim), dtype=tf, device=device, requires_grad=True)
 
         # batch size 1 for ease of usability
         self.lstm_model, self.lstm_h_init = mlt.create_lstm(input_size=self.embedding_dim + 1,  # + x for each param
@@ -69,7 +69,7 @@ class v33tgn01():
         self.optim = t.optim.SGD(self.learning_params, lr=lr)
 
         i = 0
-        while True:
+        for i in range(iter):
             batch_data = self.get_batch_data_by_rnd_label(data, batch_size)
             l, batch_loss = self.get_batch_loss(batch_data=batch_data, neg_sample_cnt=neg_sample_cnt)
 
@@ -81,6 +81,10 @@ class v33tgn01():
 
             if save_path:
                 if i % 10 == 0 and i != 0:
+                    link_prop = self._fprop(data)['link probability']
+                    # checking for NaNs
+                    if t.isnan(link_prop).max().data.item() == 1:
+                        raise Exception('NaN for training params, skipped saving model...')
                     with open(save_path, 'wb') as file_object:  # save
                         t.save(obj=self, f=file_object)
                         # pickle.dump(obj=self, file=file_object)
@@ -186,13 +190,15 @@ class v33tgn01():
         for n in range(neg_sample_cnt):
             t.manual_seed(time.time())
             # select non parents
-            neg_out_nonp, neg_label = self.NegativeSampleGenerator.nonparent(self, data=d['data'])
-            neg_out_pt_mut, _ = self.NegativeSampleGenerator.point_mutate(self, data=d['data'], noise_percent=0.5)
-            neg_out_pt_shift, _ = self.NegativeSampleGenerator.point_shift(self, data=d['data'], noise_percent=0.5)
-            link_p = t.cat([link_p, neg_out_nonp['link probability']])#, neg_out_pt_mut['link probability'],
-             #               neg_out_pt_shift['link probability']], dim=0)
-            bce_gtruth = t.cat(
-                [bce_gtruth, t.zeros(1, device=device), ])#t.zeros(1, device=device), t.zeros(1, device=device)])
+            neg = [
+                # self.NegativeSampleGenerator.add_etc_noise(self, data=d['data'], noise_percent=0.3)[0],
+                self.NegativeSampleGenerator.nonparent(self, data=d['data'])[0],
+                self.NegativeSampleGenerator.point_mutate(self, data=d['data'], noise_percent=0.3)[0],
+                self.NegativeSampleGenerator.point_shift(self, data=d['data'], noise_percent=0.3)[0]
+
+            ]
+            link_p = t.cat([link_p] + [x['link probability'] for x in neg], dim=0)
+            bce_gtruth = t.cat([bce_gtruth] + [t.zeros(1, device=device) for x in neg])
 
         link_p = link_p.div(link_p.sum())
         print(link_p)
@@ -293,10 +299,6 @@ class v33tgn01():
             neg_out = self._fprop(current_data=data)
             return neg_out, data
 
-        @staticmethod
-        def unknown_event():
-            return
-
     def _get_parents(self, data, label):
         all_label_pos = (data[0] == label).nonzero().squeeze()
         all_label_parent_pos = data[2].index_select(0, all_label_pos)
@@ -334,8 +336,6 @@ class v33tgn01():
             # filters out those that are too short
             pos_filter = label_pos - min_length + 1 > 0
             label_pos = t.masked_select(label_pos, pos_filter)
-            pos_filter = label_pos + peek + 1 < len(seq_class_data)
-            label_pos = t.masked_select(label_pos, pos_filter)
 
             # shuffle
             label_pos = label_pos[t.randperm(label_pos.shape[0])]
@@ -360,40 +360,35 @@ class v33tgn01():
             return
 
 
-data_map_path = data_folder + '/dataV4'
-save_path = data_folder + '/modelV4'
+if __name__ == '__main__':
+    data_map_path = data_folder + '/dataV4'
+    save_path = data_folder + '/modelV4'
 
-diagnostics_mode = False
+    save_mode = True
+    load_from_old = False
 
-save_mode = False
-load_from_old = True
-
-if diagnostics_mode:
-    save_mode, load_from_old = False, True
-
-data = []
-dg = data_generator()
-if load_from_old:
-    if save_mode:
+    data = []
+    dg = data_generator()
+    if load_from_old:
+        if save_mode:
+            data = dg.generate_data(seq_len=seq_len, class_count=max_class_count,
+                                    save_path=data_map_path, load_path=data_map_path)
+        else:
+            data = dg.generate_data(seq_len=seq_len, class_count=max_class_count,
+                                    load_path=data_map_path)
+    elif save_mode:
         data = dg.generate_data(seq_len=seq_len, class_count=max_class_count,
-                                save_path=data_map_path, load_path=data_map_path)
+                                save_path=data_map_path)
     else:
-        data = dg.generate_data(seq_len=seq_len, class_count=max_class_count,
-                                load_path=data_map_path)
-elif save_mode:
-    data = dg.generate_data(seq_len=seq_len, class_count=max_class_count,
-                            save_path=data_map_path)
-else:
-    data = dg.generate_data(seq_len=seq_len, class_count=max_class_count)
+        data = dg.generate_data(seq_len=seq_len, class_count=max_class_count)
 
-# seq_data_, seq_time_data_ = dg.generate_data(seq_len=seq_len, class_count=max_class_count)
+    # seq_data_, seq_time_data_ = dg.generate_data(seq_len=seq_len, class_count=max_class_count)
 
-model = v33tgn01(time_scale=0.001, max_label_count=max_class_count,
-                 window_size=min_length, peek=peek,
-                 embedding_dim=embedding_dim, lstm_layers=3)
-if load_from_old:
-    if os.path.exists(save_path):
-        with open(save_path, 'rb') as file_object:  # load
-            model = t.load(file_object, map_location=device)
-if not diagnostics_mode:
-    model.train_model(data, save_path=save_path, batch_size=1, lr=1e-2, neg_sample_cnt=1)
+    model = v33tgn01(time_scale=0.001, max_label_count=max_class_count,
+                     window_size=min_length, embedding_dim=embedding_dim, lstm_layers=3)
+    if load_from_old:
+        if os.path.exists(save_path):
+            with open(save_path, 'rb') as file_object:  # load
+                model = t.load(file_object, map_location=device)
+
+    model.train_model(data, save_path=save_path, batch_size=10, lr=1e-2, neg_sample_cnt=1)
