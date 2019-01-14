@@ -35,7 +35,7 @@ B: Must make sure that the delivery period between A to B, nothing abnormal has 
 
 The next question is, how do we determine contextual information for each event A, B? There are many ways to model contextual information but for this case, we are modelling the sequential nature of past events that occured before a particular event as that event’s context.
 
-Using data from Fig.1, we compress everything on to a single timeline.
+Using data from Fig.1, we compress everything to 1D along the same timeline.
 
 ![fig3](/src/fig3.png)
 
