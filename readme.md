@@ -113,9 +113,14 @@ There are 2 parameters to control this noise, the % historical data to shift (no
 
 ## Optimization II: Loss function
 Tanh->Softmax->Binary cross entropy
+
 Ground Truth for positive sample:
 
+![fig5](/src/pos.png)
+
 Ground Truth for negative sample:
+
+![fig5](/src/neg.png)
 
 There are currently 3 types of negative noises used for training. For every positive training used, it is matched with a negative training sample chosen at uniform random from any 1 of the 3 noise generators.
 
