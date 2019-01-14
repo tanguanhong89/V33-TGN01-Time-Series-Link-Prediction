@@ -135,8 +135,11 @@ Because this model trains against noise, the more appropriate way would be to id
 
 Since different levels of noise present different levels of training difficulty for the model, the number of training cycles for each noise level should also reflect that relationship, in particular, lower levels of noise will have higher number of training cycles.
 In this model, the scalar multiplier for iteration is a function of time as follows:  
+
 	**K=f(noise)= e(0.35/(noise+0.2))-0.8**
+
 	**Final iteration count for that noise level= K x iteration**
+
 Best weights are saved.
 
 ## Optimization IV: White noise event filter
