@@ -28,7 +28,7 @@ The primary need for this problem is more of to find anomalies in an efficient m
 Hence, we turn the above graph problem into a edge probability problem.
 Given that event B is a child of event A, what are the chances that this relationship is a legitimate one? (Edge probability)
 
-![fig2](/src/fig4.png)
+![fig2](/src/fig2.png)
 
 A: Must spawn B given a set of possible circumstances (healthy spawning conditions)
 B: Must make sure that the delivery period between A to B, nothing abnormal has happened (child swap, sudden change in birth environment such that existance of B is impossible)
