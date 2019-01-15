@@ -46,9 +46,9 @@ The context information for events M, N can be intepreted as follows:
 
 ![fig4](/src/fig4.png)
 
-Do note that because the model itself uses LSTM, which uses prior cell state for inference (means that it takes into account the whole history if possible), and that M and N shares the same environment, hence we see here that part of N’s context is actually M’s context.(sM is subset of sN if both are in the same environment, which is usually the case)
+Do note that because the model itself uses LSTM, which uses prior cell state for inference (means that it takes into account the whole history if possible), and that M and N shares the same environment, hence we see here that part of N’s context is actually M’s context.(sM is subset of s<sub>N</sub> if both are in the same environment, which is usually the case)
 
-Of course, one could argue why not just use a single LSTM for sN to predict existance of N (P(N)=f(sN)) since sN contains information from sM? Because ignoring parental information, even if conditions for birth are ideal, can result in false prediction.
+Of course, one could argue why not just use a single LSTM for s<sub>N</sub> to predict existance of N (P(N)=f(s<sub>N</sub>)) since s<sub>N</sub> contains information from sM? Because ignoring parental information, even if conditions for birth are ideal, can result in false prediction.
 
 ## Design Consideration I: Time
 In this model, time relative to the child event is used.  The value is normalized using tanh to model the latest event’s time sensitiveness to other events.
@@ -77,10 +77,7 @@ Propagate the same LSTM from 1st event to event N (latest event) to get s<sub>N<
 
 ![fig5](/src/fig7.png)
 
-The output is a single valued number that determines edge probability. 
-This is in contrast to conventional classification where one hot encoding is used to possibly represent, in this case, the parent class such that the parent of event N is determined by the greatest value in the encoding array.
-The parent-child relationship is intricately modelled by the fully connected layer so one hot encoding model is not needed here.
-One benefit of modelling this way is that confidence can be directly determined, while one hot encoding may only tell us which class has the highest probability of being the parent of child N, which may not be  suitable for the needs of this problem.
+The output is a binary classification that determines edge probability or otherwise. 
 
 ## Optimization I: Negative training
  To prevent the model from training all inputs to output 100% edge probability, negative training is needed.
