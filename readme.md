@@ -31,6 +31,7 @@ Given that event B is a child of event A, what are the chances that this relatio
 ![fig2](/src/fig2.png)
 
 A: Must spawn B given a set of possible circumstances (healthy spawning conditions)
+
 B: Must make sure that the delivery period between A to B, nothing abnormal has happened (child swap, sudden change in birth environment such that existance of B is impossible)
 
 The next question is, how do we determine contextual information for each event A, B? There are many ways to model contextual information but for this case, we are modelling the sequential nature of past events that occured before a particular event as that event’s context.
