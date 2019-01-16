@@ -59,7 +59,7 @@ In this model, time relative to the child event is used.  The value is normalize
 
 where 
 
-    • X is any event
+    • X is any event whose parental relationship is to be understood
 
     • k is a scalar to determine the period of time event N should be sensitive to. s<sub>M</sub>aller number means more sensitive to longer periods of time
     
