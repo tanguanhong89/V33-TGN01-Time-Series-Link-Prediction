@@ -58,13 +58,14 @@ In this model, time relative to the child event is used.  The value is normalize
 ![N|Solid](/src/timetanh.png)
 
 where 
-    - X is any event
 
-    - k is a scalar to determine the period of time event N should be sensitive to. s<sub>M</sub>aller number means more sensitive to longer periods of time
+    • X is any event
+
+    • k is a scalar to determine the period of time event N should be sensitive to. s<sub>M</sub>aller number means more sensitive to longer periods of time
     
-    - t*<sub>XN</sub> = t<sub>X</sub>-t<sub>N</sub> (time of event X – time of event N, if X is past event, this value is negative)
+    • t*<sub>XN</sub> = t<sub>X</sub>-t<sub>N</sub> (time of event X – time of event N, if X is past event, this value is negative)
     
-    - tanh is hyperbolic tangent
+    • tanh is hyperbolic tangent
 
 ## Design Consideration II: Other event properties
 An event may have other properties, which may influence the outcome of the model. To be as comprehesive as possible, these properties are stacked together with the event’s embeddings as part of training inputs.
