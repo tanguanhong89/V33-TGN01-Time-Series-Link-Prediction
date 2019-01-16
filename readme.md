@@ -48,7 +48,7 @@ The context information for events M, N can be intepreted as follows:
 
 Do note that because the model itself uses LSTM, which uses prior cell state for inference (means that it takes into account the whole history if possible), and that M and N shares the same environment, hence we see here that part of N’s context is actually M’s context.(sM is subset of s<sub>N</sub> if both are in the same environment, which is usually the case)
 
-Of course, one could argue why not just use a single LSTM for s<sub>N</sub> to predict existance of N (P(N)=f(s<sub>N</sub>)) since s<sub>N</sub> contains information from sM? Because ignoring parental information, even if conditions for birth are ideal, can result in false prediction.
+Of course, one could argue why not just use a single LSTM for s<sub>N</sub> to predict existance of N (P(N)=f(s<sub>N</sub>)) since s<sub>N</sub> contains information from s<sub>M</sub>? Because ignoring parental information, even if conditions for birth are ideal, can result in false prediction.
 
 ## Design Consideration I: Time
 In this model, time relative to the child event is used.  The value is normalized using tanh to model the latest event’s time sensitiveness to other events.
@@ -59,8 +59,11 @@ In this model, time relative to the child event is used.  The value is normalize
 
 where 
     - X is any event
-    - k is a scalar to determine the period of time event N should be sensitive to. Smaller number means more sensitive to longer periods of time
+
+    - k is a scalar to determine the period of time event N should be sensitive to. s<sub>M</sub>aller number means more sensitive to longer periods of time
+    
     - t*<sub>XN</sub> = t<sub>X</sub>-t<sub>N</sub> (time of event X – time of event N, if X is past event, this value is negative)
+    
     - tanh is hyperbolic tangent
 
 ## Design Consideration II: Other event properties
