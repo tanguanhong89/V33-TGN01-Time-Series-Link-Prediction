@@ -32,7 +32,7 @@ Given that event B is a child of event A, what are the chances that this relatio
 
 A: Must spawn B given a set of possible circumstances (healthy spawning conditions)
 
-B: Must make sure that the delivery period between A to B, nothing abnormal has happened (child swap, sudden change in birth environment such that existance of B is impossible)
+B: Must make sure that the delivery period between A to B, nothing abnormal has happened (child swap, sudden change in birth environment such that existence of B is impossible)
 
 The next question is, how do we determine contextual information for each event A, B? There are many ways to model contextual information but for this case, we are modelling the sequential nature of past events that occured before a particular event as that event’s context.
 
@@ -48,7 +48,7 @@ The context information for events M, N can be intepreted as follows:
 
 Do note that because the model itself uses LSTM, which uses prior cell state for inference (means that it takes into account the whole history if possible), and that M and N shares the same environment, hence we see here that part of N’s context is actually M’s context.(sM is subset of s<sub>N</sub> if both are in the same environment, which is usually the case)
 
-Of course, one could argue why not just use a single LSTM for s<sub>N</sub> to predict existance of N (P(N)=f(s<sub>N</sub>)) since s<sub>N</sub> contains information from s<sub>M</sub>? Because ignoring parental information, even if conditions for birth are ideal, can result in false prediction.
+Of course, one could argue why not just use a single LSTM for s<sub>N</sub> to predict existence of N (P(N)=f(s<sub>N</sub>)) since s<sub>N</sub> contains information from s<sub>M</sub>? Because ignoring parental information, even if conditions for birth are ideal, can result in false prediction.
 
 ## Design Consideration I: Time
 In this model, time relative to the child event is used.  The value is normalized using tanh to model the latest event’s time sensitiveness to other events.
